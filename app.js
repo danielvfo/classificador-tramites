@@ -10,10 +10,10 @@ const express = require('express');
 // cfenv provides access to your Cloud Foundry environment
 // for more info, see: https://www.npmjs.com/package/cfenv
 const cfenv = require('cfenv');
-// Body parser for reading bodies from html requests
-const bodyParser = require('body-parser');
 // Require the personalized alchmey module built for this project
 var alchemy = require('./controllers/alchemyController');
+var fileController = require('./controllers/fileController');
+const bodyParser = require('body-parser');
 
 // create a new express server
 var app = express();
@@ -21,15 +21,21 @@ var app = express();
 app.use(express.static(__dirname + '/public'));
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
-var parameters = {text: ''};
 
+var urlencodedParser = bodyParser.text({ extended: false });
+var parameters = {text: ''};
 alchemy = new alchemy();
 
-alchemy.processFile(function(data) {
-  //content = data.toString();
-  parameters.text = data.toString();
-  alchemy.callKeyWords(parameters);
+app.post('/upload', urlencodedParser, function(req, res) {
+  console.log(req.body);
+  res.send('Thank you!!!');
 });
+
+// alchemy.processFile(function(data) {
+//   //content = data.toString();
+//   parameters.text = data.toString();
+//   alchemy.callKeyWords(parameters);
+// });
 
 
 // processFile(function(data) {
