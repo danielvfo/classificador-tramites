@@ -10,14 +10,6 @@ const jsonfile = require('jsonfile');
 module.exports = class alchemyController {
     constructor() {};
 
-    processFile(callback) {
-        fs.readFile('./Atendimento.csv', function(err, data) {
-            if(err)
-                throw err;
-            callback(data);
-        });
-    };
-
     callKeyWords(parameters) {
         alchemy_language.keywords(parameters, function (err, response) {
             if (err)
