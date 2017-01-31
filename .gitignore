@@ -5,4 +5,4 @@ $git status
 /node_modules
 /.vscode
 /Atendimento.csv
-/temp/*.*
+/temp/*

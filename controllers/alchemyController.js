@@ -5,7 +5,6 @@ const watson = require('watson-developer-cloud');
 const alchemy_language = watson.alchemy_language({
   api_key: '296b17b5ca79141c458302bd12be4afed4eb5b5d'
 });
-const jsonfile = require('jsonfile');
 
 module.exports = class alchemyController {
     constructor() {};
@@ -15,15 +14,7 @@ module.exports = class alchemyController {
             if (err)
                 throw err;
             else
-                //console.log(JSON.stringify(response, null, 2));
-                fs.writeFile('./temp/data.json', '', function(err) {
-                    if (err)
-                        throw err;
-                });
-                jsonfile.writeFile('./temp/data.json', response, function(err) {
-                    if (err)
-                        throw err;
-                });    
+                cosole.log('');
         });
     };
 
