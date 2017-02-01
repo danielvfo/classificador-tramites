@@ -4,7 +4,7 @@ const fs = require('fs');
 const jsonfile = require('jsonfile');
 
 module.exports = class fileController {
-    constructor() {}
+    constructor() {};
 
     // File processing no longer needed while receiving raw text throught html request
     // processFile(callback) {
@@ -27,6 +27,6 @@ module.exports = class fileController {
             if (err)
                 throw err;
         }); 
-    }
+    };
 
 }

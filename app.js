@@ -12,7 +12,6 @@ const express = require('express');
 const cfenv = require('cfenv');
 // Require the personalized alchmey module built for this project
 var alchemy = require('./controllers/alchemyController');
-var fileController = require('./controllers/fileController');
 const bodyParser = require('body-parser');
 
 // create a new express server
@@ -27,9 +26,12 @@ var parameters = {text: ''};
 alchemy = new alchemy();
 
 app.post('/upload', urlencodedParser, function(req, res) {
-  console.log(req.body);
+  //console.log(req.body);
+  parameters.text = req.body;
+  alchemy.callKeyWords(parameters);
   res.send('Thank you!!!');
 });
+
 
 // alchemy.processFile(function(data) {
 //   //content = data.toString();
