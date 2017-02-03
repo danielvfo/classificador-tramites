@@ -24,13 +24,26 @@ var appEnv = cfenv.getAppEnv();
 var urlencodedParser = bodyParser.text({ extended: false });
 var parameters = {text: ''};
 alchemy = new alchemy();
+var array = [];
+var obj_array = [];
 
 app.post('/upload', urlencodedParser, function(req, res) {
   //console.log(req.body);
   parameters.text = req.body;
-  alchemy.callKeyWords(parameters);
+  // console.log(parameters.text);
+  array = parameters.text.split('\n');
+  array.forEach(function(value) {
+    obj_array.push({text: value});
+  });
+  //console.log(obj_array[0]);
+  obj_array.forEach( (obj) => {
+    alchemy.callKeyWordsStream(obj);
+  });
+  //alchemy.callKeyWords(parameters);
   res.send('Thank you!!!');
 });
+
+
 
 
 // alchemy.processFile(function(data) {
