@@ -13,8 +13,10 @@ module.exports = class alchemyController {
         fileController = new fileController();
     };
 
-    callKeyWords(parameters) {
-        file_name = 'KeyWords' + Math.floor((Math.random() * 100000) + 1).toString() + '.json';
+    callKeyWords(str) {
+        var parameters = {text: ''};
+        parameters.text = str;
+        file_name = 'KeyWords.json';
         alchemy_language.keywords(parameters, function(err, response) {
             if (err)
                 throw err;
@@ -22,7 +24,6 @@ module.exports = class alchemyController {
                 fileController.createNewFile(file_name);
                 fileController.writeFile(file_name, response);
         });
-        return file_name;
     };
 
     // callKeyWordsStream(obj) {
@@ -36,30 +37,17 @@ module.exports = class alchemyController {
     //     });
     // };
 
-    callRelations(parameters) {
-        alchemy_language.relations(parameters, function(err, response) {
+    callEntities(str) {
+        var parameters = {text: ''};
+        parameters.text = str;
+        file_name = 'Entities.json';
+        alchemy_language.entities(parameters, function(err, response) {
             if (err)
-                console.log('error:', err);
+                throw err;
             else
-                console.log(JSON.stringify(response, null, 2));
-        });
-    };
-
-    callEntities(parameters) {
-        alchemy_language.entities(parameters, function (err, response) {
-            if (err)
-                console.log('error:', err);
-            else
-                console.log(JSON.stringify(response, null, 2));
+                fileController.createNewFile(file_name);
+                fileController.writeFile(file_name, response);
         });
     };        
 
-    callTypedRelations(parameters) {
-        alchemy_language.typedRelations(parameters, function (err, response) {
-            if (err)
-                console.log('error:', err);
-            else
-                console.log(JSON.stringify(response, null, 2));
-        });
-    };
 }

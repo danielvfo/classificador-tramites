@@ -13,52 +13,60 @@ const cfenv = require('cfenv');
 // Require the personalized alchmey module built for this project
 var alchemy = require('./controllers/alchemyController');
 const bodyParser = require('body-parser');
+const jsonfile = require('jsonfile');
 
 // create a new express server
 var app = express();
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
 
 var urlencodedParser = bodyParser.text({ extended: false });
-var parameters = {text: ''};
 alchemy = new alchemy();
-var array = [];
-var obj_array = [];
+var keyWords_obj;
+var entities_obj;
 
 app.post('/upload', urlencodedParser, function(req, res) {
-  //console.log(req.body);
-  parameters.text = req.body;
-  // console.log(parameters.text);
-  array = parameters.text.split('\n');
-  array.forEach(function(value) {
-    obj_array.push({text: value});
+
+  //parameters.text = req.body;
+  alchemy.callKeyWords(req.body);
+  
+
+  jsonfile.readFile(__dirname + '/temp/KeyWords.json', function(err, obj) {
+    //console.log(obj);
+    keyWords_obj = obj;
   });
-  //console.log(obj_array[0]);
-  obj_array.forEach( (obj) => {
-    alchemy.callKeyWordsStream(obj);
-  });
-  //alchemy.callKeyWords(parameters);
+
+
+  // array = parameters.text.split('\n');
+  // array.forEach(function(value) {
+  //   obj_array.push({text: value});
+  // });
+  // obj_array.forEach( (obj) => {
+  //   alchemy.callKeyWordsStream(obj);
+  // });
+
+  
+  //console.log(var1);
+  //console.log(obj);
   res.send('Thank you!!!');
+  //res.render(__dirname + '/views/results.ejs', {KEYWORDS: obj});  
 });
 
+app.post('/upload', urlencodedParser, function(req, res) {
+  alchemy.callEntities(req.body);
+  jsonfile.readFile(__dirname + '/temp/Entities.json', function(err, obj) {
+    //console.log(obj);
+    entities_obj = obj;
+  });
+});
 
-
-
-// alchemy.processFile(function(data) {
-//   //content = data.toString();
-//   parameters.text = data.toString();
-//   alchemy.callKeyWords(parameters);
-// });
-
-
-// processFile(function(data) {
-// content = data.toString();
-// parameters.text = content;
-// //console.log(parameters.text);
-// callAlchemy();
-// });
+app.get('/test', function(req, res) {
+  res.render(__dirname + '/views/results.ejs', {KEYWORDS: keyWords_obj, ENTITIES: entities_obj});
+  //console.log(alchemy_obj);
+});
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, '0.0.0.0', function() {

@@ -6,15 +6,6 @@ const jsonfile = require('jsonfile');
 module.exports = class fileController {
     constructor() {};
 
-    // File processing no longer needed while receiving raw text throught html request
-    // processFile(callback) {
-    //     fs.readFile('./Atendimento.csv', function(err, data) {
-    //         if(err)
-    //             throw err;
-    //         callback(data);
-    //     });
-    // };
-
     createNewFile(name) {
         fs.writeFile('./temp/' + name, '', function(err) {
             if (err)
@@ -29,17 +20,17 @@ module.exports = class fileController {
         }); 
     };
 
-    writeStream(name, response, obj){
-        delete response.status;
-        delete response.usage;
-        delete response.totalTransactions;
-        delete response.language;
-        let key = obj;
-        let value = response;
-        let json_obj = {};
-        json_obj = jsonfile.readFileSync('./temp/' + name);
-        json_obj.key = `" ${value} "`;
-        jsonfile.writeFileSync('./temp/' + name, json_obj);
+    // writeStream(name, response, obj){
+    //     delete response.status;
+    //     delete response.usage;
+    //     delete response.totalTransactions;
+    //     delete response.language;
+    //     let key = obj;
+    //     let value = response;
+    //     let json_obj = {};
+    //     json_obj = jsonfile.readFileSync('./temp/' + name);
+    //     json_obj.key = `" ${value} "`;
+    //     jsonfile.writeFileSync('./temp/' + name, json_obj);
         // fs.open('./temp/' + name, 'w+', (err, fd) => {
         //     if (err) {
         //         if (err.code === "EEXIST") {
@@ -73,8 +64,7 @@ module.exports = class fileController {
         //         if (err)
         //             throw err;    
         //     });
-        // });
-        
-    };
+        // });  
+   // };
 
 }
