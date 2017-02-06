@@ -30,9 +30,14 @@ var entities_obj;
 
 app.post('/upload', urlencodedParser, function(req, res) {
 
-  //parameters.text = req.body;
-  alchemy.callKeyWords(req.body);
-  
+	console.log('teste')
+  	//parameters.text = req.body;
+  	alchemy.callKeyWords(req.body, function(response) {
+  		console.log('teste')
+       callback(response); 
+   });
+
+
 
   jsonfile.readFile(__dirname + '/temp/KeyWords.json', function(err, obj) {
     //console.log(obj);
@@ -55,13 +60,13 @@ app.post('/upload', urlencodedParser, function(req, res) {
   //res.render(__dirname + '/views/results.ejs', {KEYWORDS: obj});  
 });
 
-app.post('/upload', urlencodedParser, function(req, res) {
-  alchemy.callEntities(req.body);
-  jsonfile.readFile(__dirname + '/temp/Entities.json', function(err, obj) {
+//app.post('/upload', urlencodedParser, function(req, res) {
+  //alchemy.callEntities(req.body);
+  //jsonfile.readFile(__dirname + '/temp/Entities.json', function(err, obj) {
     //console.log(obj);
-    entities_obj = obj;
-  });
-});
+    //entities_obj = obj;
+  //});
+//});
 
 app.get('/test', function(req, res) {
   res.render(__dirname + '/views/results.ejs', {KEYWORDS: keyWords_obj, ENTITIES: entities_obj});
