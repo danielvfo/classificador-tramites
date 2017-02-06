@@ -30,45 +30,32 @@ var keyWords_obj;
 var entities_obj;
 
 app.post('/upload', urlencodedParser, function(req, res) {
-  
-	console.log('teste')
-  	//parameters.text = req.body;
-  	alchemy.callKeyWords(req.body, function(response) {
-  		console.log('teste')
-       callback(response); 
-   });
-
-
-
-  jsonfile.readFile(__dirname + '/temp/KeyWords.json', function(err, obj) {
-    //console.log(obj);
-    keyWords_obj = obj;
+  const text = req.body;
+  alchemy_kw.callKeyWords(text, function() {
+    jsonfile.readFile(__dirname + '/temp/KeyWords.json', function(err, obj) {
+      if (err)
+        throw err;
+      keyWords_obj = obj;
+      delete keyWords_obj.status;
+      delete keyWords_obj.usage;
+      delete keyWords_obj.totalTransactions;
+      delete keyWords_obj.language;
+    });
   });
 
-
-  // array = parameters.text.split('\n');
-  // array.forEach(function(value) {
-  //   obj_array.push({text: value});
-  // });
-  // obj_array.forEach( (obj) => {
-  //   alchemy.callKeyWordsStream(obj);
-  // });
-
-  
-  //console.log(var1);
-  //console.log(obj);
+  alchemy_et.callEntities(text, function() {
+    jsonfile.readFile(__dirname + '/temp/Entities.json', function(err, obj) {
+      if (err)
+        throw err;
+      entities_obj = obj;
+      delete entities_obj.status;
+      delete entities_obj.usage;
+      delete entities_obj.totalTransactions;
+      delete entities_obj.language;
+    });
+  });
   res.send('Thank you!!!');
-  //res.render(__dirname + '/views/results.ejs', {KEYWORDS: obj});  
 });
-
-//app.post('/upload', urlencodedParser, function(req, res) {
-  //alchemy.callEntities(req.body);
-  //jsonfile.readFile(__dirname + '/temp/Entities.json', function(err, obj) {
-    //console.log(obj);
-    //entities_obj = obj;
-  //});
-//});
->>>>>>> 2cf2c2bc5c7eb1edfc8baef69359629ac6742e79
 
 app.get('/test', function(req, res) {
   res.render(__dirname + '/views/results.ejs', {KEYWORDS: keyWords_obj, ENTITIES: entities_obj});
