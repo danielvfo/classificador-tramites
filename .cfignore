@@ -1,4 +1,7 @@
 node_modules
 .vscode
 Atendimento.csv
-temp/*
+# exclude everything
+somefolder/*
+# exception to the rule
+!somefolder/.gitkeep 

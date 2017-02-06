@@ -6,47 +6,36 @@ const alchemy_language = watson.alchemy_language({
   api_key: '1983ebb06eafbfc15c6088b77ac1c9b8fe327f43'
 });
 var fileController = require('./fileController');
-var file_name = '';
+fileController = new fileController();
 
 module.exports = class alchemyController {
-    constructor() {
-        fileController = new fileController();
-    };
+    constructor() {};
 
-    callKeyWords(str) {
+    callKeyWords(str, callback) {
         var parameters = {text: ''};
         parameters.text = str;
-        file_name = 'KeyWords.json';
+        var file_name = 'KeyWords.json';
+        fileController.createNewFile(file_name);
         alchemy_language.keywords(parameters, function(err, response) {
             if (err)
                 throw err;
             else
-                fileController.createNewFile(file_name);
                 fileController.writeFile(file_name, response);
+            callback();
         });
     };
 
-    // callKeyWordsStream(obj) {
-    //     file_name = 'KeyWordsStream.json';
-    //     alchemy_language.keywords(obj, function(err, response) {
-    //         if (err)
-    //             throw err;
-    //         else
-    //             fileController.createNewFile(file_name);
-    //             fileController.writeStream(file_name, response, obj);
-    //     });
-    // };
-
-    callEntities(str) {
+    callEntities(str, callback) {
         var parameters = {text: ''};
         parameters.text = str;
-        file_name = 'Entities.json';
+        var file_name = 'Entities.json';
+        fileController.createNewFile(file_name);
         alchemy_language.entities(parameters, function(err, response) {
             if (err)
                 throw err;
             else
-                fileController.createNewFile(file_name);
                 fileController.writeFile(file_name, response);
+                callback();
         });
     };        
 
